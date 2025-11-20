@@ -7,7 +7,10 @@ export default class Game {
         this.holes = [];
         this.score = 0;
         this.miss = 0;
+        this.timeLeft = 60;
+        this.timerId = null;
         this.intervalId = null;
+        this.isPaused = false;
         this.settings = {
             ttl: 800,
             spawnSpeed: 1000
@@ -31,6 +34,8 @@ export default class Game {
 
     start() {
         this.score = 0;
+        this.miss = 0;
+        this.timeLeft = 60;
         this.updateScoreboard();
 
         if(this.intervalId) {
@@ -40,12 +45,32 @@ export default class Game {
         this.intervalId = setInterval(() => {
             this.spawnMole();
         }, this.settings.spawnSpeed);
+        
+        if (this.timerId) {
+            clearInterval(this.timerId);
+        }
+
+        this.timerId = setInterval(() => {
+            this.timeLeft--;
+            this.updateScoreboard();
+        
+            if (this.timeLeft <= 0) {
+                this.stop();
+                clearInterval(this.timerId);
+                this.timerId = null;
+            }
+        }, 1000);
     }
 
     stop() {
         if (this.intervalId) {
             clearInterval(this.intervalId);
             this.intervalId = null;
+        }
+
+        if(this.timerId) {
+            clearInterval(this.timerId);
+            this.timerId = null;
         }
 
         this.holes.forEach(hole => {
@@ -90,12 +115,18 @@ export default class Game {
         const scoreEl = document.querySelector('#score');
         if (scoreEl) {
             scoreEl.textContent = `Score: ${this.score}`;
-        }
-         const missEl = document.querySelector('#miss');
+        };
+        
+        const missEl = document.querySelector('#miss');
         if (missEl) {
             missEl.textContent = `Miss count = ${this.miss}`;
-        }
-    }
+        };
+
+        const timeEl = document.querySelector('#time');
+        if (timeEl) {
+            timeEl.textContent = `Time: ${this.timeLeft}`;
+        };
+    };
 
     reset() {
         this.stop();
