@@ -8,6 +8,7 @@ export default class Game {
         this.score = 0;
         this.miss = 0;
         this.timeLeft = 60;
+        this.isRunning = false;
         this.timerId = null;
         this.intervalId = null;
         this.isPaused = false;
@@ -33,6 +34,8 @@ export default class Game {
     }
 
     start() {
+        this.isPaused = false;
+        this.isRunning = true;
         this.score = 0;
         this.miss = 0;
         this.timeLeft = 60;
@@ -42,13 +45,14 @@ export default class Game {
             clearInterval(this.intervalId);
         }
         
+        if (this.timerId) {
+            clearInterval(this.timerId);
+        }
+
         this.intervalId = setInterval(() => {
             this.spawnMole();
         }, this.settings.spawnSpeed);
         
-        if (this.timerId) {
-            clearInterval(this.timerId);
-        }
 
         this.timerId = setInterval(() => {
             this.timeLeft--;
@@ -77,6 +81,46 @@ export default class Game {
             const mole = hole.querySelector('.mole');
             if (mole) mole.remove();
         });
+
+        this.isRunning = false;
+        this.isPaused = false;
+    }
+
+    pause() {
+        if (this.isPaused) return;
+
+        this.isPaused = true;
+
+        if (this.intervalId) {
+            clearInterval(this.intervalId);
+            this.intervalId = null;
+        }
+
+        if (this.timerId) {
+            clearInterval(this.timerId);
+            this.timerId = null;
+        }
+    }
+
+    resume() {
+        if (!this.isPaused) return;
+
+        this.isPaused = false;
+
+        this.intervalId = setInterval(() => {
+            this.spawnMole();
+        }, this.settings.spawnSpeed);
+
+        this.timerId = setInterval(() => {
+            this.timeLeft--;
+            this.updateScoreboard();
+
+            if (this.timeLeft <= 0) {
+                this.stop();
+                clearInterval(this.timerId);
+                this.timerId = null;
+            }
+        }, 1000);
     }
 
     spawnMole() {
@@ -95,6 +139,8 @@ export default class Game {
     }
 
     handleClick(event) {
+        if (!this.isRunning) return;
+        
         const hole = event.target.closest('.hole');
 
         if (!hole || !this.holes.includes(hole)) return;
@@ -132,7 +178,9 @@ export default class Game {
         this.stop();
         this.score = 0;
         this.miss = 0;
-
+        this.timeLeft = 60;
+        this.isRunning = false;
+        this.isPaused = false;
         this.updateScoreboard();
     }
 }

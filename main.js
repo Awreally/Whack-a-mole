@@ -10,12 +10,20 @@ const endBtn = document.querySelector('#end');
 
 startBtn.addEventListener('click', () => {
     game.start();
+    pauseBtn.textContent = 'Pause';
 });
 
 pauseBtn.addEventListener('click', () => {
-    game.stop();
+    if (!game.isPaused) {
+        game.pause();
+        pauseBtn.textContent = 'Resume';
+    } else {
+        game.resume();
+        pauseBtn.textContent = 'Pause';
+    }
 });
 
 endBtn.addEventListener('click', () => {
     game.reset();
+    pauseBtn.textContent = 'Pause';
 });

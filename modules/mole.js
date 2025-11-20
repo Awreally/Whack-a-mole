@@ -2,7 +2,7 @@ export default class Mole {
     constructor(holeElement, options = {}) {
         this.holeElement = holeElement;
         this.element = null;
-        this.ttl = options.ttl || 800;
+        this.ttl = options.ttl || 900;
         this.timeoutId = null;
     }
 
