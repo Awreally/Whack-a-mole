@@ -8,6 +8,24 @@
     <script type="module" src="main.js" defer></script>
 </head>
 <body>
-    <h1>Whack-A-Mole!</h1>
+    <div class="container">
+        <h1>Whack-A-Mole!</h1>
+    </div>
+    <main class="container">
+        <section class="hud" aria-label="Gamecontroller">
+            <div class="controls">
+                <button class="startgame" id="start">Start game</button>
+                <button class="pausegame" id="pause">Pause game</button>
+                <button class="endgame" id="end">End Game</button>
+            </div>
+            <div class="scoreboard">
+                <span id="score" role="status">Score: 0</span>
+                <span id="time" role="status">Time: 60</span>
+                <span id="miss" role="status">Miss count = 0</span>
+            </div>
+        </section>
+        <div id="gameboard" role="group" aria-label="Game board 3 by 3 grid"></div>
+        
+    </main>
 </body>
 </html>
