@@ -1,38 +1,27 @@
 export default class Mole {
-    constructor(holeElement, options = {}) {
-        this.holeElement = holeElement;
-        this.element = null;
-        this.ttl = options.ttl || 900;
-        this.timeoutId = null;
-    }
+  constructor(hole, ttl = 900) {
+    this.hole = hole;
+    this.el = null;
+    this.timer = null;
+    this.ttl = ttl;
+  }
 
-    mount() {
-        this.element = document.createElement('div');
-        this.element.classList.add('mole');
+  spawn() {
+    this.el = document.createElement("div");
+    this.el.className = "mole";
+    this.hole.appendChild(this.el);
 
-        this.element.moleInstance = this;
+    this.timer = setTimeout(() => this.hide(), this.ttl);
+  }
 
-        this.holeElement.appendChild(this.element);
+  hide() {
+    clearTimeout(this.timer);
+    this.el?.remove();
+    this.el = null;
+  }
 
-        this.timeoutId = setTimeout(() => {
-            this.remove();
-        }, this.ttl);
-    }
-
-    remove() {
-        if (this.timeoutId) {
-            clearTimeout(this.timeoutId);
-            this.timeoutId = null;
-        }
-
-        if (this.element && this.element.parentNode) {
-            this.element.remove();
-        }
-        this.element = null;
-    }
-
-    wasHit() {
-        this.remove();
-        return true;
-    }
+  hit() {
+    this.hide();
+    return true;
+  }
 }

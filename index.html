@@ -1,31 +1,30 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Whack-A-Mole</title>
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="styles.css" />
     <script type="module" src="main.js" defer></script>
-</head>
-<body>
+  </head>
+  <body>
     <div class="container">
-        <h1>Whack-A-Mole!</h1>
+      <h1>Whack-A-Mole!</h1>
     </div>
     <main class="container">
-        <section class="hud" aria-label="Gamecontroller">
-            <div class="controls">
-                <button class="startgame" id="start">Start game</button>
-                <button class="pausegame" id="pause">Pause</button>
-                <button class="endgame" id="end">End Game</button>
-            </div>
-            <div class="scoreboard">
-                <span id="score" role="status">Score: 0</span>
-                <span id="time" role="status">Time: 60</span>
-                <span id="miss" role="status">Miss count = 0</span>
-            </div>
+      <div id="hud">
+        <section class="controls">
+          <button class="startgame" id="start">Start game</button>
+          <button class="pausegame" id="pause">Pause</button>
+          <button class="endgame" id="end">End Game</button>
         </section>
-        <div id="gameboard" role="group" aria-label="Game board 3 by 3 grid"></div>
-        
+        <div class="status" role="status" aria-live="polite">
+          <span id="score">Score: 0</span>
+          <span id="time">Time: 60</span>
+          <span id="miss">Miss count = 0</span>
+        </div>
+      </div>
+      <div id="gameboard" role="group" aria-label="Game board 3 by 3 grid"></div>
     </main>
-</body>
+  </body>
 </html>
